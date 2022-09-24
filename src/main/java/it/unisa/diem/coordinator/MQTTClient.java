@@ -23,6 +23,7 @@ import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 public class MQTTClient {
 
 	private IMqttClient client;
+	private boolean connected;
 	private String broadcastTopic;
 	
 	private int samplingPeriod;
@@ -32,7 +33,8 @@ public class MQTTClient {
 	
 	public MQTTClient(String serverURI, String clientID, String broadcastTopic) throws MqttException {
 		
-		client = new MqttClient(serverURI, clientID);
+		this.client = new MqttClient(serverURI, clientID);
+		this.connected = false;
 		this.broadcastTopic = broadcastTopic;
 		this.devices = new HashMap<>();
 		this.formatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm:ss.SSS");
@@ -71,6 +73,7 @@ public class MQTTClient {
 			}
 			
 		});
+		connected = true;
 		System.out.println("Connected!");
 	}
 	
@@ -220,6 +223,10 @@ public class MQTTClient {
 			return true;
 		else
 			return false;
+	}
+	
+	public boolean isConnected() {
+		return connected;
 	}
 	
 	public HashMap<String, DeviceData> getDevices() {

@@ -25,6 +25,12 @@ public class Controller {
 		String broadcastTopic = CoordinatorApplication.broadcastTopic;
 		try {
 			MQTTClient client = CoordinatorApplication.client; 
+			
+			if(client.isConnected()) {
+				System.out.println("Client already connected!");
+				return;
+			}
+			
 			client.connect(CoordinatorApplication.username, 
 					CoordinatorApplication.password, 
 					CoordinatorApplication.connectionTimeout);
