@@ -1,77 +1,64 @@
 package it.unisa.diem.coordinator;
 
 import java.time.LocalDateTime;
-import java.util.TreeMap;
-import java.util.Map.Entry;
+import java.util.Stack;
 
 public class DeviceData {
-	private TreeMap<LocalDateTime, String> accelerometerData;
-	private TreeMap<LocalDateTime, String> orientationData;
-	private TreeMap<LocalDateTime, String> locationData;
+	private Stack<String> accelerometerData;
+	private Stack<String> orientationData;
+	private Stack<String> locationData;
 	
 	public DeviceData() {
-		accelerometerData = new TreeMap<>();
-		orientationData = new TreeMap<>();
-		locationData = new TreeMap<>();
+		accelerometerData = new Stack<>();
+		orientationData = new Stack<>();
+		locationData = new Stack<>();
 	}
 	
-	public String putAccelerometer(LocalDateTime dateTime, String value) {
-		return accelerometerData.put(dateTime, value);
+	public String pushAccelerometer(LocalDateTime dateTime, String value) {
+		return accelerometerData.push(dateTime + "," + value);
 	}
 	
-	public String putOrientation(LocalDateTime dateTime, String value) {
-		return orientationData.put(dateTime, value);
+	public String pushOrientation(LocalDateTime dateTime, String value) {
+		return orientationData.push(dateTime + "," + value);
 	}
 	
-	public String putLocation(LocalDateTime dateTime, String value) {
-		return locationData.put(dateTime, value);
+	public String pushLocation(LocalDateTime dateTime, String value) {
+		return locationData.push(dateTime + "," + value);
 	}
 	
-	public LocalDateTime lastAccelerometerKey() {
-		return accelerometerData.lastKey();
+	public String topAccelerometer() {
+		return accelerometerData.peek();
 	}
 	
-	public LocalDateTime lastOrientationKey() {
-		return orientationData.lastKey();
+	public String topOrientation() {
+		return orientationData.peek();
 	}
 	
-	public LocalDateTime lastLocationKey() {
-		return locationData.lastKey();
+	public String topLocationKey() {
+		return locationData.peek();
 	}
 	
-	public String getAccelerometer(LocalDateTime dateTime) {
-		return accelerometerData.get(dateTime);
+	public String popAccelerometer() {
+		return accelerometerData.pop();
 	}
 	
-	public String getOrientation(LocalDateTime dateTime) {
-		return orientationData.get(dateTime);
+	public String popOrientation() {
+		return orientationData.pop();
 	}
 	
-	public String getLocation(LocalDateTime dateTime) {
-		return locationData.get(dateTime);
-	}
-	
-	public Entry<LocalDateTime, String> pollLastAccelerometerEntry() {
-		return accelerometerData.pollLastEntry();
-	}
-	
-	public Entry<LocalDateTime, String> pollLastOrientationEntry() {
-		return orientationData.pollLastEntry();
-	}
-	
-	public Entry<LocalDateTime, String> pollLastLocationEntry() {
-		return locationData.pollLastEntry();
+	public String popLocation() {
+		return locationData.pop();
 	}
 	
 	public boolean isAccelerometerEmpty() {
-		return accelerometerData.isEmpty();
+		return accelerometerData.empty();
 	}
 	
 	public boolean isOrientationEmpty() {
-		return orientationData.isEmpty();
+		return orientationData.empty();
 	}
 	
 	public boolean isLocationEmpty() {
-		return locationData.isEmpty();
+		return locationData.empty();
 	}
 }
