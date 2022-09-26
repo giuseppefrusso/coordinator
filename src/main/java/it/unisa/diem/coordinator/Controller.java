@@ -1,9 +1,7 @@
 package it.unisa.diem.coordinator;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Map.Entry;
-import java.util.TreeSet;
+import java.util.Stack;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -62,16 +60,16 @@ public class Controller {
 	}
 	
 	@GetMapping("{deviceID}/accelerometer/last-values/{n}")
-	public Collection<String> getLastNValuesOfAccelerometer(@PathVariable String deviceID, @PathVariable int n) {
+	public Stack<String> getLastNValuesOfAccelerometer(@PathVariable String deviceID, @PathVariable int n) {
 		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID);
-		Collection<String> lastValues = new TreeSet<>();
+		Stack<String> lastValues = new Stack<>();
 		
 		if(allValues != null)
 			for(int i=0; i<n; i++) {
-				Entry<LocalDateTime, String> entry = allValues.pollLastAccelerometerEntry();
+				String entry = allValues.popAccelerometer();
 				if(entry == null)
 					break;
-				lastValues.add(entry.getKey().toString() + "," + entry.getValue());
+				lastValues.push(entry);
 			}
 		else
 			return null;
@@ -80,16 +78,16 @@ public class Controller {
 	}
 	
 	@GetMapping("{deviceID}/orientation/last-values/{n}")
-	public Collection<String> getLastNValuesOfOrientation(@PathVariable String deviceID, @PathVariable int n) {
+	public Stack<String> getLastNValuesOfOrientation(@PathVariable String deviceID, @PathVariable int n) {
 		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID);
-		Collection<String> lastValues = new TreeSet<>();
+		Stack<String> lastValues = new Stack<>();
 		
 		if(allValues != null)
 			for(int i=0; i<n; i++) {
-				Entry<LocalDateTime, String> entry = allValues.pollLastOrientationEntry();
+				String entry = allValues.popOrientation();
 				if(entry == null)
 					break;
-				lastValues.add(entry.getKey().toString() + "," + entry.getValue());
+				lastValues.push(entry);
 			}
 		
 		return lastValues;
@@ -98,14 +96,14 @@ public class Controller {
 	@GetMapping("{deviceID}/location/last-values/{n}")
 	public Collection<String> getLastNValuesOfLocation(@PathVariable String deviceID, @PathVariable int n) {
 		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID);
-		Collection<String> lastValues = new TreeSet<>();
+		Stack<String> lastValues = new Stack<>();
 		
 		if(allValues != null)
 			for(int i=0; i<n; i++) {
-				Entry<LocalDateTime, String> entry = allValues.pollLastLocationEntry();
+				String entry = allValues.popLocation();
 				if(entry == null)
 					break;
-				lastValues.add(entry.getKey().toString() + "," + entry.getValue());
+				lastValues.push(entry);
 			}
 		
 		return lastValues;

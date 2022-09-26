@@ -119,20 +119,25 @@ public class MQTTClient {
 			@Override
 			public void messageArrived(String topic, MqttMessage message) {
 				System.out.println(String.format("%s: %s", topic, message.toString()));
+				DeviceData data = devices.get(deviceID);
 				
 				String fields[] = message.toString().split(";");
-				LocalDateTime dateTimeCurrent;
+				LocalDateTime dateTimeCurrent, dateTimePast;
 				try{
 					dateTimeCurrent = LocalDateTime.parse(fields[0], formatter);
+					// No need of formatter because the date-time was already stored with the default format
+					if(!data.isAccelerometerEmpty())
+						dateTimePast = LocalDateTime.parse(data.topAccelerometer().split(",")[0]);
+					else
+						dateTimePast = LocalDateTime.MIN;
 				} catch(DateTimeParseException ex) {
 					return;
 				}
 				
-				DeviceData data = devices.get(deviceID);
-				boolean conditionOfSamplingPeriod = !data.isAccelerometerEmpty() && 
-						checkDateTimeWithSamplingPeriod(data.lastAccelerometerKey(), dateTimeCurrent);
+				boolean conditionOfSamplingPeriod = !data.isOrientationEmpty() && 
+						checkDateTimeWithSamplingPeriod(dateTimePast, dateTimeCurrent);
 				if(conditionOfSamplingPeriod || data.isAccelerometerEmpty()) {
-					data.putAccelerometer(dateTimeCurrent, fields[1]);
+					data.pushAccelerometer(dateTimeCurrent, fields[1]);
 					// To update the DeviceData object in the map, it must be reloaded
 					devices.put(deviceID, data);
 				}	
@@ -145,20 +150,26 @@ public class MQTTClient {
 			@Override
 			public void messageArrived(String topic, MqttMessage message) {
 				System.out.println(String.format("%s: %s", topic, message.toString()));
+				DeviceData data = devices.get(deviceID);
 				
 				String fields[] = message.toString().split(";");
-				LocalDateTime dateTimeCurrent;
+				LocalDateTime dateTimeCurrent, dateTimePast;
 				try{
 					dateTimeCurrent = LocalDateTime.parse(fields[0], formatter);
+					// No need of formatter because the date-time was already stored with the default format
+					if(!data.isOrientationEmpty())
+						dateTimePast = LocalDateTime.parse(data.topOrientation().split(",")[0]);
+					else
+						dateTimePast = LocalDateTime.MIN;
 				} catch(DateTimeParseException ex) {
 					return;
 				}
 				
-				DeviceData data = devices.get(deviceID);
+				// New data are stored if enough milliseconds are spent
 				boolean conditionOfSamplingPeriod = !data.isOrientationEmpty() && 
-						checkDateTimeWithSamplingPeriod(data.lastOrientationKey(), dateTimeCurrent);
+						checkDateTimeWithSamplingPeriod(dateTimePast, dateTimeCurrent);
 				if(conditionOfSamplingPeriod || data.isOrientationEmpty()) {
-					data.putOrientation(dateTimeCurrent, fields[1]);
+					data.pushOrientation(dateTimeCurrent, fields[1]);
 					// To update the DeviceData object in the map, it must be reloaded
 					devices.put(deviceID, data);
 				}
@@ -170,21 +181,28 @@ public class MQTTClient {
 
 			@Override
 			public void messageArrived(String topic, MqttMessage message) {
-				System.out.println(String.format("%s: %s", topic, message.toString()));
+				DeviceData data = devices.get(deviceID);
 				
 				String fields[] = message.toString().split(";");
-				LocalDateTime dateTimeCurrent;
+				LocalDateTime dateTimeCurrent, dateTimePast;
 				try{
 					dateTimeCurrent = LocalDateTime.parse(fields[0], formatter);
+					// No need of formatter because the date-time was already stored with the default format
+					if(!data.isLocationEmpty())
+						dateTimePast = LocalDateTime.parse(data.topLocation().split(",")[0]);
+					else
+						dateTimePast = LocalDateTime.MIN;
 				} catch(DateTimeParseException ex) {
 					return;
 				}
 				
-				DeviceData data = devices.get(deviceID);
+				// New data are stored if enough milliseconds are spent
 				boolean conditionOfSamplingPeriod = !data.isLocationEmpty() && 
-						checkDateTimeWithSamplingPeriod(data.lastLocationKey(), dateTimeCurrent);
+						checkDateTimeWithSamplingPeriod(dateTimePast, dateTimeCurrent);
 				if(conditionOfSamplingPeriod || data.isLocationEmpty()) {
-					data.putLocation(dateTimeCurrent, fields[1]);
+					// Prints the message arrived only if it will be stored in the collection
+					System.out.println(String.format("%s: %s", topic, message.toString()));
+					data.pushLocation(dateTimeCurrent, fields[1]);
 					// To update the DeviceData object in the map, it must be reloaded
 					devices.put(deviceID, data);
 				}

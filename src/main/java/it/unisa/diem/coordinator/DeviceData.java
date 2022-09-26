@@ -34,7 +34,7 @@ public class DeviceData {
 		return orientationData.peek();
 	}
 	
-	public String topLocationKey() {
+	public String topLocation() {
 		return locationData.peek();
 	}
 	
