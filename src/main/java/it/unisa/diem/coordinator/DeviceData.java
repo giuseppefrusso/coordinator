@@ -39,15 +39,24 @@ public class DeviceData {
 	}
 	
 	public String popAccelerometer() {
-		return accelerometerData.pop();
+		if(!accelerometerData.empty())
+			return accelerometerData.pop();
+		else
+			return null;
 	}
 	
 	public String popOrientation() {
-		return orientationData.pop();
+		if(!orientationData.empty())
+			return orientationData.pop();
+		else
+			return null;
 	}
 	
 	public String popLocation() {
-		return locationData.pop();
+		if(!locationData.empty())
+			return locationData.pop();
+		else
+			return null;
 	}
 	
 	public boolean isAccelerometerEmpty() {
