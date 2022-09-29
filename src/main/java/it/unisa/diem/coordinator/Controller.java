@@ -61,7 +61,7 @@ public class Controller {
 	
 	@GetMapping("{deviceID}/accelerometer/last-values/{n}")
 	public Stack<String> getLastNValuesOfAccelerometer(@PathVariable String deviceID, @PathVariable int n) {
-		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID);
+		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID).clone();
 		Stack<String> lastValues = new Stack<>();
 		
 		if(allValues != null)
@@ -79,7 +79,7 @@ public class Controller {
 	
 	@GetMapping("{deviceID}/orientation/last-values/{n}")
 	public Stack<String> getLastNValuesOfOrientation(@PathVariable String deviceID, @PathVariable int n) {
-		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID);
+		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID).clone();
 		Stack<String> lastValues = new Stack<>();
 		
 		if(allValues != null)
@@ -95,7 +95,7 @@ public class Controller {
 	
 	@GetMapping("{deviceID}/location/last-values/{n}")
 	public Collection<String> getLastNValuesOfLocation(@PathVariable String deviceID, @PathVariable int n) {
-		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID);
+		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID).clone();
 		Stack<String> lastValues = new Stack<>();
 		
 		if(allValues != null)

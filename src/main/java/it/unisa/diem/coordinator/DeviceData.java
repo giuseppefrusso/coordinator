@@ -70,4 +70,13 @@ public class DeviceData {
 	public boolean isLocationEmpty() {
 		return locationData.empty();
 	}
+	
+	@Override
+	public DeviceData clone() {
+		DeviceData copy = new DeviceData();
+		copy.accelerometerData = (Stack<String>) this.accelerometerData.clone();
+		copy.orientationData = (Stack<String>) this.orientationData.clone();
+		copy.locationData = (Stack<String>) this.locationData.clone();
+		return copy;
+	}
 }

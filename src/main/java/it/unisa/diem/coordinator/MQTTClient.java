@@ -118,7 +118,6 @@ public class MQTTClient {
 
 			@Override
 			public void messageArrived(String topic, MqttMessage message) {
-				System.out.println(String.format("%s: %s", topic, message.toString()));
 				DeviceData data = devices.get(deviceID);
 				
 				String fields[] = message.toString().split(";");
@@ -137,6 +136,7 @@ public class MQTTClient {
 				boolean conditionOfSamplingPeriod = !data.isOrientationEmpty() && 
 						checkDateTimeWithSamplingPeriod(dateTimePast, dateTimeCurrent);
 				if(conditionOfSamplingPeriod || data.isAccelerometerEmpty()) {
+					System.out.println(String.format("%s: %s", topic, message.toString()));
 					data.pushAccelerometer(dateTimeCurrent, fields[1]);
 					// To update the DeviceData object in the map, it must be reloaded
 					devices.put(deviceID, data);
@@ -149,7 +149,6 @@ public class MQTTClient {
 
 			@Override
 			public void messageArrived(String topic, MqttMessage message) {
-				System.out.println(String.format("%s: %s", topic, message.toString()));
 				DeviceData data = devices.get(deviceID);
 				
 				String fields[] = message.toString().split(";");
@@ -169,6 +168,7 @@ public class MQTTClient {
 				boolean conditionOfSamplingPeriod = !data.isOrientationEmpty() && 
 						checkDateTimeWithSamplingPeriod(dateTimePast, dateTimeCurrent);
 				if(conditionOfSamplingPeriod || data.isOrientationEmpty()) {
+					System.out.println(String.format("%s: %s", topic, message.toString()));
 					data.pushOrientation(dateTimeCurrent, fields[1]);
 					// To update the DeviceData object in the map, it must be reloaded
 					devices.put(deviceID, data);
