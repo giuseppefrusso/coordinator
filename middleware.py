@@ -10,7 +10,7 @@ def connect(url):
 
 @anvil.server.callable
 def get_sampling_period(url):
-  response = get(url + "/sampling_period")
+  response = get(url + "/sampling-period")
   return response.ok, response.json()
 
 @anvil.server.callable
