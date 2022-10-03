@@ -1,5 +1,4 @@
 import anvil.server
-import anvil.server
 from requests import get, post
 
 anvil.server.connect("V23YCA5UMIN3Q52VEH4TDDNU-26NAOBMYMLYZTIUC")
