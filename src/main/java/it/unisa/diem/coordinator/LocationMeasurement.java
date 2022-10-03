@@ -1,3 +1,5 @@
+package it.unisa.diem.coordinator;
+
 import java.time.LocalDateTime;
 
 public class LocationMeasurement {
