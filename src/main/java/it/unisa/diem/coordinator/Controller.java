@@ -60,7 +60,8 @@ public class Controller {
 	}
 	
 	@GetMapping("{deviceID}/accelerometer/last-values/{n}")
-	public Stack<AccelerometerMeasurement> getLastNValuesOfAccelerometer(@PathVariable String deviceID, @PathVariable int n) {
+	public Stack<AccelerometerMeasurement> getLastNValuesOfAccelerometer(
+			@PathVariable String deviceID, @PathVariable int n) {
 		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID).clone();
 		Stack<AccelerometerMeasurement> lastValues = new Stack<>();
 		
@@ -78,7 +79,8 @@ public class Controller {
 	}
 	
 	@GetMapping("{deviceID}/orientation/last-values/{n}")
-	public Stack<OrientationMeasurement> getLastNValuesOfOrientation(@PathVariable String deviceID, @PathVariable int n) {
+	public Stack<OrientationMeasurement> getLastNValuesOfOrientation(
+			@PathVariable String deviceID, @PathVariable int n) {
 		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID).clone();
 		Stack<OrientationMeasurement> lastValues = new Stack<>();
 		
@@ -89,12 +91,15 @@ public class Controller {
 					break;
 				lastValues.push(entry);
 			}
+		else
+			return null;
 		
 		return lastValues;
 	}
 	
 	@GetMapping("{deviceID}/location/last-values/{n}")
-	public Stack<LocationMeasurement> getLastNValuesOfLocation(@PathVariable String deviceID, @PathVariable int n) {
+	public Stack<LocationMeasurement> getLastNValuesOfLocation(
+			@PathVariable String deviceID, @PathVariable int n) {
 		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID).clone();
 		Stack<LocationMeasurement> lastValues = new Stack<>();
 		
@@ -105,6 +110,8 @@ public class Controller {
 					break;
 				lastValues.push(entry);
 			}
+		else
+			return null;
 		
 		return lastValues;
 	}
