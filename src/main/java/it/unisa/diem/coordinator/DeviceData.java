@@ -1,12 +1,11 @@
 package it.unisa.diem.coordinator;
 
-import java.time.LocalDateTime;
 import java.util.Stack;
 
 public class DeviceData {
-	private Stack<String> accelerometerData;
-	private Stack<String> orientationData;
-	private Stack<String> locationData;
+	private Stack<AccelerometerMeasurement> accelerometerData;
+	private Stack<OrientationMeasurement> orientationData;
+	private Stack<LocationMeasurement> locationData;
 	
 	public DeviceData() {
 		accelerometerData = new Stack<>();
@@ -14,45 +13,45 @@ public class DeviceData {
 		locationData = new Stack<>();
 	}
 	
-	public String pushAccelerometer(LocalDateTime dateTime, String value) {
-		return accelerometerData.push(dateTime + "," + value);
+	public AccelerometerMeasurement pushAccelerometer(AccelerometerMeasurement m) {
+		return accelerometerData.push(m);
 	}
 	
-	public String pushOrientation(LocalDateTime dateTime, String value) {
-		return orientationData.push(dateTime + "," + value);
+	public OrientationMeasurement pushOrientation(OrientationMeasurement m) {
+		return orientationData.push(m);
 	}
 	
-	public String pushLocation(LocalDateTime dateTime, String value) {
-		return locationData.push(dateTime + "," + value);
+	public LocationMeasurement pushLocation(LocationMeasurement m) {
+		return locationData.push(m);
 	}
 	
-	public String topAccelerometer() {
+	public AccelerometerMeasurement topAccelerometer() {
 		return accelerometerData.peek();
 	}
 	
-	public String topOrientation() {
+	public OrientationMeasurement topOrientation() {
 		return orientationData.peek();
 	}
 	
-	public String topLocation() {
+	public LocationMeasurement topLocation() {
 		return locationData.peek();
 	}
 	
-	public String popAccelerometer() {
+	public AccelerometerMeasurement popAccelerometer() {
 		if(!accelerometerData.empty())
 			return accelerometerData.pop();
 		else
 			return null;
 	}
 	
-	public String popOrientation() {
+	public OrientationMeasurement popOrientation() {
 		if(!orientationData.empty())
 			return orientationData.pop();
 		else
 			return null;
 	}
 	
-	public String popLocation() {
+	public LocationMeasurement popLocation() {
 		if(!locationData.empty())
 			return locationData.pop();
 		else
@@ -74,9 +73,9 @@ public class DeviceData {
 	@Override
 	public DeviceData clone() {
 		DeviceData copy = new DeviceData();
-		copy.accelerometerData = (Stack<String>) this.accelerometerData.clone();
-		copy.orientationData = (Stack<String>) this.orientationData.clone();
-		copy.locationData = (Stack<String>) this.locationData.clone();
+		copy.accelerometerData = (Stack<AccelerometerMeasurement>) this.accelerometerData.clone();
+		copy.orientationData = (Stack<OrientationMeasurement>) this.orientationData.clone();
+		copy.locationData = (Stack<LocationMeasurement>) this.locationData.clone();
 		return copy;
 	}
 }

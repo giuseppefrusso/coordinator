@@ -8,7 +8,6 @@ public class LocationMeasurement {
 	private double latitude, longitude;
 	
 	public LocationMeasurement(LocalDateTime dateTime, double latitude, double longitude) {
-		super();
 		this.dateTime = dateTime;
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -36,5 +35,10 @@ public class LocationMeasurement {
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+	
+	@Override
+	public String toString() {
+		return dateTime.toString() + "," + latitude + "," + longitude;
 	}
 }

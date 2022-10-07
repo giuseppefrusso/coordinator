@@ -60,13 +60,13 @@ public class Controller {
 	}
 	
 	@GetMapping("{deviceID}/accelerometer/last-values/{n}")
-	public Stack<String> getLastNValuesOfAccelerometer(@PathVariable String deviceID, @PathVariable int n) {
+	public Stack<AccelerometerMeasurement> getLastNValuesOfAccelerometer(@PathVariable String deviceID, @PathVariable int n) {
 		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID).clone();
-		Stack<String> lastValues = new Stack<>();
+		Stack<AccelerometerMeasurement> lastValues = new Stack<>();
 		
 		if(allValues != null)
 			for(int i=0; i<n; i++) {
-				String entry = allValues.popAccelerometer();
+				AccelerometerMeasurement entry = allValues.popAccelerometer();
 				if(entry == null)
 					break;
 				lastValues.push(entry);
@@ -78,13 +78,13 @@ public class Controller {
 	}
 	
 	@GetMapping("{deviceID}/orientation/last-values/{n}")
-	public Stack<String> getLastNValuesOfOrientation(@PathVariable String deviceID, @PathVariable int n) {
+	public Stack<OrientationMeasurement> getLastNValuesOfOrientation(@PathVariable String deviceID, @PathVariable int n) {
 		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID).clone();
-		Stack<String> lastValues = new Stack<>();
+		Stack<OrientationMeasurement> lastValues = new Stack<>();
 		
 		if(allValues != null)
 			for(int i=0; i<n; i++) {
-				String entry = allValues.popOrientation();
+				OrientationMeasurement entry = allValues.popOrientation();
 				if(entry == null)
 					break;
 				lastValues.push(entry);
@@ -94,13 +94,13 @@ public class Controller {
 	}
 	
 	@GetMapping("{deviceID}/location/last-values/{n}")
-	public Collection<String> getLastNValuesOfLocation(@PathVariable String deviceID, @PathVariable int n) {
+	public Stack<LocationMeasurement> getLastNValuesOfLocation(@PathVariable String deviceID, @PathVariable int n) {
 		DeviceData allValues = CoordinatorApplication.client.getDevices().get(deviceID).clone();
-		Stack<String> lastValues = new Stack<>();
+		Stack<LocationMeasurement> lastValues = new Stack<>();
 		
 		if(allValues != null)
 			for(int i=0; i<n; i++) {
-				String entry = allValues.popLocation();
+				LocationMeasurement entry = allValues.popLocation();
 				if(entry == null)
 					break;
 				lastValues.push(entry);

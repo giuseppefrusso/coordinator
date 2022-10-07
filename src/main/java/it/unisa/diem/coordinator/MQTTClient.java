@@ -124,9 +124,8 @@ public class MQTTClient {
 				LocalDateTime dateTimeCurrent, dateTimePast;
 				try{
 					dateTimeCurrent = LocalDateTime.parse(fields[0], formatter);
-					// No need of formatter because the date-time was already stored with the default format
 					if(!data.isAccelerometerEmpty())
-						dateTimePast = LocalDateTime.parse(data.topAccelerometer().split(",")[0]);
+						dateTimePast = data.topAccelerometer().getDateTime();
 					else
 						dateTimePast = LocalDateTime.MIN;
 				} catch(DateTimeParseException ex) {
@@ -136,8 +135,19 @@ public class MQTTClient {
 				boolean conditionOfSamplingPeriod = !data.isOrientationEmpty() && 
 						checkDateTimeWithSamplingPeriod(dateTimePast, dateTimeCurrent);
 				if(conditionOfSamplingPeriod || data.isAccelerometerEmpty()) {
-					System.out.println(String.format("%s: %s", topic, message.toString()));
-					data.pushAccelerometer(dateTimeCurrent, fields[1]);
+					double x, y, z;
+					try {
+						String values[] = fields[1].split(",");
+						x = Double.parseDouble(values[0]);
+						y = Double.parseDouble(values[1]);
+						z = Double.parseDouble(values[2]);
+					} catch(NumberFormatException ex) {
+						return;
+					}
+					
+					System.out.println(String.format("%s: %s", topic, message.toString()));				
+					
+					data.pushAccelerometer(new AccelerometerMeasurement(dateTimeCurrent, x, y, z));
 					// To update the DeviceData object in the map, it must be reloaded
 					devices.put(deviceID, data);
 				}	
@@ -155,9 +165,8 @@ public class MQTTClient {
 				LocalDateTime dateTimeCurrent, dateTimePast;
 				try{
 					dateTimeCurrent = LocalDateTime.parse(fields[0], formatter);
-					// No need of formatter because the date-time was already stored with the default format
 					if(!data.isOrientationEmpty())
-						dateTimePast = LocalDateTime.parse(data.topOrientation().split(",")[0]);
+						dateTimePast = data.topOrientation().getDateTime();
 					else
 						dateTimePast = LocalDateTime.MIN;
 				} catch(DateTimeParseException ex) {
@@ -168,8 +177,18 @@ public class MQTTClient {
 				boolean conditionOfSamplingPeriod = !data.isOrientationEmpty() && 
 						checkDateTimeWithSamplingPeriod(dateTimePast, dateTimeCurrent);
 				if(conditionOfSamplingPeriod || data.isOrientationEmpty()) {
+					double azimuth, pitch, roll;
+					try {
+						String values[] = fields[1].split(",");
+						azimuth = Double.parseDouble(values[0]);
+						pitch = Double.parseDouble(values[1]);
+						roll = Double.parseDouble(values[2]);
+					} catch(NumberFormatException ex) {
+						return;
+					}
+					
 					System.out.println(String.format("%s: %s", topic, message.toString()));
-					data.pushOrientation(dateTimeCurrent, fields[1]);
+					data.pushOrientation(new OrientationMeasurement(dateTimeCurrent, azimuth, pitch, roll));
 					// To update the DeviceData object in the map, it must be reloaded
 					devices.put(deviceID, data);
 				}
@@ -189,7 +208,7 @@ public class MQTTClient {
 					dateTimeCurrent = LocalDateTime.parse(fields[0], formatter);
 					// No need of formatter because the date-time was already stored with the default format
 					if(!data.isLocationEmpty())
-						dateTimePast = LocalDateTime.parse(data.topLocation().split(",")[0]);
+						dateTimePast = data.topLocation().getDateTime();
 					else
 						dateTimePast = LocalDateTime.MIN;
 				} catch(DateTimeParseException ex) {
@@ -200,9 +219,17 @@ public class MQTTClient {
 				boolean conditionOfSamplingPeriod = !data.isLocationEmpty() && 
 						checkDateTimeWithSamplingPeriod(dateTimePast, dateTimeCurrent);
 				if(conditionOfSamplingPeriod || data.isLocationEmpty()) {
-					// Prints the message arrived only if it will be stored in the collection
+					double latitude, longitude;
+					try {
+						String values[] = fields[1].split(",");
+						latitude = Double.parseDouble(values[0]);
+						longitude = Double.parseDouble(values[1]);
+					} catch(NumberFormatException ex) {
+						return;
+					}
+					
 					System.out.println(String.format("%s: %s", topic, message.toString()));
-					data.pushLocation(dateTimeCurrent, fields[1]);
+					data.pushLocation(new LocationMeasurement(dateTimeCurrent, latitude, longitude));
 					// To update the DeviceData object in the map, it must be reloaded
 					devices.put(deviceID, data);
 				}
