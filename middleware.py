@@ -52,11 +52,6 @@ def get_last_accelerometer_values(url, device, n):
   list_to_string = "\n".join(lines)
   values_text = "Accelerometer\n" + list_to_string
 
-  try: 
-    last_datetime = parse(response.json()[0]['dateTime'], fuzzy=True)
-  except KeyError:
-    last_datetime = datetime.min
-
   mean_x = np.mean(Xs)
   mean_y = np.mean(Ys)
   mean_z = np.mean(Zs)
@@ -91,11 +86,6 @@ def get_last_orientation_values(url, device, n):
   list_to_string = "\n".join(lines)
   values_text = "Orientation\n" + list_to_string
 
-  try: 
-    last_datetime = parse(response.json()[0]['dateTime'], fuzzy=True)
-  except KeyError:
-    last_datetime = datetime.min
-
   mean_az = np.mean(azimuths)
   mean_pi = np.mean(pitches)
   mean_ro = np.mean(rolls)
@@ -127,11 +117,6 @@ def get_last_location_values(url, device, n):
 
   list_to_string = "\n".join(lines)
   values_text = "Location\n" + list_to_string
-
-  try: 
-    last_datetime = parse(response.json()[0]['dateTime'], fuzzy=True)
-  except KeyError:
-    last_datetime = datetime.min
 
   mean_lat = np.mean(latitudes)
   mean_long = np.mean(longitudes)
