@@ -83,7 +83,7 @@ public class MQTTClient {
 		System.out.println("Disconnected!");
 	}
 	
-	protected void subscribeForDiscoveringDevices() throws MqttSecurityException, MqttException {
+	public void subscribeForDiscoveringDevices() throws MqttSecurityException, MqttException {
 
 		System.out.println("Discovering new devices...");
 		client.subscribe(broadcastTopic + "/newDevice", new IMqttMessageListener() {
@@ -261,7 +261,7 @@ public class MQTTClient {
 	 * @param dateTimeCurrent relative to new data arrived
 	 * @return true if the condition is positive, false otherwise
 	 */
-	public boolean checkDateTimeWithSamplingPeriod(LocalDateTime dateTimePast, LocalDateTime dateTimeCurrent) {
+	private boolean checkDateTimeWithSamplingPeriod(LocalDateTime dateTimePast, LocalDateTime dateTimeCurrent) {
 		LocalDateTime dateTimeCurrentMinusSamplingPeriod = dateTimeCurrent.minus(samplingPeriod, ChronoUnit.MILLIS);
 		
 		if(dateTimeCurrentMinusSamplingPeriod.isAfter(dateTimePast))
