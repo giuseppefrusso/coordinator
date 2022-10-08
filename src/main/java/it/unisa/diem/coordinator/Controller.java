@@ -164,7 +164,7 @@ public class Controller {
 	}
 	
 	@PostMapping("/set-sampling-period")
-	public void postSamplingRate(@RequestBody int samplingPeriod) throws Exception {
+	public void postSamplingPeriod(@RequestBody int samplingPeriod) throws Exception {
 		conf.setSamplingPeriod(samplingPeriod);
 		CoordinatorApplication.client.publish("/samplingPeriod", String.valueOf(samplingPeriod));
 		
@@ -174,7 +174,7 @@ public class Controller {
 	}
 	
 	@PostMapping("/set-accelerometer")
-	public void postAccelerator(@RequestBody boolean accelerometer) throws Exception {
+	public void postAccelerometer(@RequestBody boolean accelerometer) throws Exception {
 		conf.setAccelerometer(accelerometer);
 		
 		CoordinatorApplication.client.publish("/accelerometer", String.valueOf(accelerometer));
