@@ -111,7 +111,7 @@ def get_last_location_values(url, device, n):
   latitudes = []
   longitudes = []
   for entry in response.json():
-    lines.append(f"{entry['dateTime']},{entry['latitude']:.5f},{entry['longitude']:.5f} ms")
+    lines.append(f"{entry['dateTime']},{entry['latitude']:.5f},{entry['longitude']:.5f}")
     latitudes.append(round(entry['latitude'],5))
     longitudes.append(round(entry['longitude'],5))
 
