@@ -66,7 +66,7 @@ def get_last_accelerometer_values(url, device, n):
   end_time = datetime.now()
   elapsed_time_list.append(compute_timedelta_ms(start_time, end_time))
   print(f"Mean elapsed time for {len(elapsed_time_list)} measurements: {np.mean(elapsed_time_list):.1f} ms;")
-  print(f"Variance of elapsed time: {np.variance(elapsed_time_list)}")
+  print(f"Variance of elapsed time: {np.var(elapsed_time_list):.1f}\n")
   return response.ok, values_text, mean_text, variance_text
 
 @anvil.server.callable
@@ -102,7 +102,7 @@ def get_last_orientation_values(url, device, n):
   end_time = datetime.now()
   elapsed_time_list.append(compute_timedelta_ms(start_time, end_time))
   print(f"Mean elapsed time for {len(elapsed_time_list)} measurements: {np.mean(elapsed_time_list):.1f} ms;")
-  print(f"Variance of elapsed time: {np.variance(elapsed_time_list)}")
+  print(f"Variance of elapsed time: {np.var(elapsed_time_list)}\n")
   return response.ok, values_text, mean_text, variance_text
   
 @anvil.server.callable
@@ -134,7 +134,7 @@ def get_last_location_values(url, device, n):
   end_time = datetime.now()
   elapsed_time_list.append(compute_timedelta_ms(start_time, end_time))
   print(f"Mean elapsed time for {len(elapsed_time_list)} measurements: {np.mean(elapsed_time_list):.1f} ms;")
-  print(f"Variance of elapsed time: {np.variance(elapsed_time_list)}")
+  print(f"Variance of elapsed time: {np.var(elapsed_time_list)}\n")
   return response.ok, values_text, mean_text, variance_text
 
 def compute_timedelta_ms(dt1, dt2):
