@@ -9,6 +9,8 @@ from datetime import timedelta
 
 anvil.server.connect("V23YCA5UMIN3Q52VEH4TDDNU-26NAOBMYMLYZTIUC")
 
+elapsed_time_list = []
+
 @anvil.server.callable
 def connect(url):
   response = post(url + "/connect")
@@ -62,7 +64,9 @@ def get_last_accelerometer_values(url, device, n):
   var_z = np.var(Zs)
   variance_text = f"Variance\nx: {var_x:.5f}, y: {var_y:.5f}, z: {var_z:.5f}"
   end_time = datetime.now()
-  print(f"Elapsed time for accelerometer: {compute_timedelta_ms(start_time, end_time):.1f} ms")
+  elapsed_time_list.append(compute_timedelta_ms(start_time, end_time))
+  print(f"Mean elapsed time for {len(elapsed_time_list)} measurements: {np.mean(elapsed_time_list):.1f} ms;")
+  print(f"Variance of elapsed time: {np.variance(elapsed_time_list)}")
   return response.ok, values_text, mean_text, variance_text
 
 @anvil.server.callable
@@ -96,7 +100,9 @@ def get_last_orientation_values(url, device, n):
   var_ro = np.var(rolls)
   variance_text = f"Variance\naz: {var_az:.5f}, pi: {var_pi:.5f}, ro: {var_ro:.5f}"
   end_time = datetime.now()
-  print(f"Elapsed time for orientation: {compute_timedelta_ms(start_time, end_time):.1f} ms")
+  elapsed_time_list.append(compute_timedelta_ms(start_time, end_time))
+  print(f"Mean elapsed time for {len(elapsed_time_list)} measurements: {np.mean(elapsed_time_list):.1f} ms;")
+  print(f"Variance of elapsed time: {np.variance(elapsed_time_list)}")
   return response.ok, values_text, mean_text, variance_text
   
 @anvil.server.callable
@@ -126,7 +132,9 @@ def get_last_location_values(url, device, n):
   var_long = np.var(longitudes)
   variance_text = f"Variance\nlat: {var_lat:.5f}, long: {var_long:.5f}"
   end_time = datetime.now()
-  print(f"Elapsed time for location: {compute_timedelta_ms(start_time, end_time):.5f} ms")
+  elapsed_time_list.append(compute_timedelta_ms(start_time, end_time))
+  print(f"Mean elapsed time for {len(elapsed_time_list)} measurements: {np.mean(elapsed_time_list):.1f} ms;")
+  print(f"Variance of elapsed time: {np.variance(elapsed_time_list)}")
   return response.ok, values_text, mean_text, variance_text
 
 def compute_timedelta_ms(dt1, dt2):
